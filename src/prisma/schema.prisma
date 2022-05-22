@@ -1,0 +1,539 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["windows"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Addresses {
+  Id              Int           @id(map: "PK_Addresses") @default(autoincrement())
+  PropertyNumber  String?       @db.NVarChar(Max)
+  FloorNumber     Int?
+  ApartmentNumber Int?
+  StreetName      String?       @db.NVarChar(200)
+  UniqueMark      String        @default("N'", map: "DF__Addresses__Uniqu__68487DD7") @db.NVarChar(200)
+  Description     String        @db.NVarChar(Max)
+  DistrictId      Int?
+  RequestId       Int           @unique(map: "IX_Addresses_RequestId")
+  AddedDate       DateTime
+  ModifiedDate    DateTime?
+  Createdby       String?       @db.NVarChar(Max)
+  UpdatedBy       String?       @db.NVarChar(Max)
+  RegionId        Int           @default(0, map: "DF__Addresses__Regio__6A30C649")
+  SyncStatus      Int?
+  SyncStatusSa    Int?
+  Districts       Districts?    @relation(fields: [DistrictId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Addresses_Districts_DistrictId")
+  Regions         Regions       @relation(fields: [RegionId], references: [Id], onUpdate: NoAction, map: "FK_Addresses_Regions_RegionId")
+  Requests        Requests      @relation(fields: [RequestId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_Addresses_Requests_RequestId")
+  AspNetUsers     AspNetUsers[]
+
+  @@index([DistrictId], map: "IX_Addresses_DistrictId")
+  @@index([RegionId], map: "IX_Addresses_RegionId")
+}
+
+model APIConsumers {
+  Id                   Int       @id(map: "PK_APIConsumers") @default(autoincrement())
+  ApplicationName      String    @db.NVarChar(Max)
+  PasswordHash         String    @db.NVarChar(Max)
+  Salt                 String    @db.NVarChar(Max)
+  ApplicationSecretKey String    @db.NVarChar(256)
+  PublicKey            Bytes?
+  PrivateKey           Bytes?
+  AddedDate            DateTime
+  ModifiedDate         DateTime?
+  Createdby            String?   @db.NVarChar(Max)
+  UpdatedBy            String?   @db.NVarChar(Max)
+  Enabled              Boolean   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__APIConsum__Enabl__339FAB6E")
+}
+
+model AspNetRoleClaims {
+  Id          Int         @id(map: "PK_AspNetRoleClaims") @default(autoincrement())
+  RoleId      String      @db.NVarChar(450)
+  ClaimType   String?     @db.NVarChar(Max)
+  ClaimValue  String?     @db.NVarChar(Max)
+  AspNetRoles AspNetRoles @relation(fields: [RoleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetRoleClaims_AspNetRoles_RoleId")
+
+  @@index([RoleId], map: "IX_AspNetRoleClaims_RoleId")
+}
+
+model AspNetRoles {
+  Id               String             @id(map: "PK_AspNetRoles") @db.NVarChar(450)
+  Name             String?            @db.NVarChar(256)
+  NormalizedName   String?            @db.NVarChar(256)
+  ConcurrencyStamp String?            @db.NVarChar(Max)
+  AspNetRoleClaims AspNetRoleClaims[]
+  AspNetUserRoles  AspNetUserRoles[]
+}
+
+model AspNetUserClaims {
+  Id          Int         @id(map: "PK_AspNetUserClaims") @default(autoincrement())
+  UserId      String      @db.NVarChar(450)
+  ClaimType   String?     @db.NVarChar(Max)
+  ClaimValue  String?     @db.NVarChar(Max)
+  AspNetUsers AspNetUsers @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserClaims_AspNetUsers_UserId")
+
+  @@index([UserId], map: "IX_AspNetUserClaims_UserId")
+}
+
+model AspNetUserLogins {
+  LoginProvider       String      @db.NVarChar(128)
+  ProviderKey         String      @db.NVarChar(128)
+  ProviderDisplayName String?     @db.NVarChar(Max)
+  UserId              String      @db.NVarChar(450)
+  AspNetUsers         AspNetUsers @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserLogins_AspNetUsers_UserId")
+
+  @@id([LoginProvider, ProviderKey], map: "PK_AspNetUserLogins")
+  @@index([UserId], map: "IX_AspNetUserLogins_UserId")
+}
+
+model AspNetUserRoles {
+  UserId      String      @db.NVarChar(450)
+  RoleId      String      @db.NVarChar(450)
+  AspNetRoles AspNetRoles @relation(fields: [RoleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserRoles_AspNetRoles_RoleId")
+  AspNetUsers AspNetUsers @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserRoles_AspNetUsers_UserId")
+
+  @@id([UserId, RoleId], map: "PK_AspNetUserRoles")
+  @@index([RoleId], map: "IX_AspNetUserRoles_RoleId")
+}
+
+model AspNetUsers {
+  Id                                         String                 @id(map: "PK_AspNetUsers") @db.NVarChar(450)
+  ArabicFullName                             String                 @db.NVarChar(200)
+  AddedDate                                  DateTime
+  ModifiedDate                               DateTime?
+  MakerId                                    String?                @db.NVarChar(450)
+  DateOfBirth                                DateTime
+  FirstLogIn                                 Boolean
+  AddressId                                  Int?
+  UserName                                   String?                @db.NVarChar(256)
+  NormalizedUserName                         String?                @db.NVarChar(256)
+  Email                                      String?                @db.NVarChar(256)
+  NormalizedEmail                            String?                @db.NVarChar(256)
+  EmailConfirmed                             Boolean
+  PasswordHash                               String?                @db.NVarChar(Max)
+  SecurityStamp                              String?                @db.NVarChar(Max)
+  ConcurrencyStamp                           String?                @db.NVarChar(Max)
+  PhoneNumber                                String?                @db.NVarChar(Max)
+  PhoneNumberConfirmed                       Boolean
+  TwoFactorEnabled                           Boolean
+  LockoutEnd                                 DateTime?              @db.DateTimeOffset
+  LockoutEnabled                             Boolean
+  AccessFailedCount                          Int
+  SyncStatus                                 Int?
+  UserType                                   Int                    @default(1, map: "DF__AspNetUse__UserT__3493CFA7")
+  SyncStatusSa                               Int?
+  Addresses                                  Addresses?             @relation(fields: [AddressId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_AspNetUsers_Addresses_AddressId")
+  AspNetUsers                                AspNetUsers?           @relation("AspNetUsersToAspNetUsers_MakerId", fields: [MakerId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_AspNetUsers_AspNetUsers_MakerId")
+  AspNetUserClaims                           AspNetUserClaims[]
+  AspNetUserLogins                           AspNetUserLogins[]
+  AspNetUserRoles                            AspNetUserRoles[]
+  other_AspNetUsers                          AspNetUsers[]          @relation("AspNetUsersToAspNetUsers_MakerId")
+  AspNetUserTokens                           AspNetUserTokens[]
+  ComplaintReplies                           ComplaintReplies[]
+  Complaints_AspNetUsersToComplaints_MakerId Complaints[]           @relation("AspNetUsersToComplaints_MakerId")
+  Complaints_AspNetUsersToComplaints_UserId  Complaints[]           @relation("AspNetUsersToComplaints_UserId")
+  PaymentTrasnsactions                       PaymentTrasnsactions[]
+  Requests                                   Requests[]
+  UserProfiles                               UserProfiles?
+
+  @@index([NormalizedEmail], map: "EmailIndex")
+  @@index([AddressId], map: "IX_AspNetUsers_AddressId")
+  @@index([MakerId], map: "IX_AspNetUsers_MakerId")
+}
+
+model AspNetUserTokens {
+  UserId        String      @db.NVarChar(450)
+  LoginProvider String      @db.NVarChar(128)
+  Name          String      @db.NVarChar(128)
+  Value         String?     @db.NVarChar(Max)
+  AspNetUsers   AspNetUsers @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserTokens_AspNetUsers_UserId")
+
+  @@id([UserId, LoginProvider, Name], map: "PK_AspNetUserTokens")
+}
+
+model ComplaintReplies {
+  Id           Int         @id(map: "PK_ComplaintReplies") @default(autoincrement())
+  ComplaintId  Int
+  Content      String      @db.NVarChar(Max)
+  MakerId      String      @db.NVarChar(450)
+  AddedDate    DateTime
+  ModifiedDate DateTime?
+  Createdby    String?     @db.NVarChar(Max)
+  UpdatedBy    String?     @db.NVarChar(Max)
+  Complaints   Complaints  @relation(fields: [ComplaintId], references: [Id], onUpdate: NoAction, map: "FK_ComplaintReplies_Complaints_ComplaintId")
+  AspNetUsers  AspNetUsers @relation(fields: [MakerId], references: [Id], onUpdate: NoAction, map: "FK_ComplaintReplies_AspNetUsers_MakerId")
+
+  @@index([ComplaintId], map: "IX_ComplaintReplies_ComplaintId")
+  @@index([MakerId], map: "IX_ComplaintReplies_MakerId")
+}
+
+model Complaints {
+  Id                                          Int                @id(map: "PK_Complaints") @default(autoincrement())
+  Title                                       String             @db.NVarChar(Max)
+  Content                                     String             @db.NVarChar(Max)
+  ComplaintStatus                             Int
+  ComplaintType                               Int
+  MakerId                                     String             @db.NVarChar(450)
+  RequestId                                   Int?
+  AddedDate                                   DateTime
+  ModifiedDate                                DateTime?
+  Createdby                                   String?            @db.NVarChar(Max)
+  UpdatedBy                                   String?            @db.NVarChar(Max)
+  UserId                                      String             @default("N'0f0a1987-5b8e-4632-8b14-f4ca7c8b3316'", map: "DF__Complaint__UserI__6B24EA82") @db.NVarChar(450)
+  AspNetUsers_AspNetUsersToComplaints_MakerId AspNetUsers        @relation("AspNetUsersToComplaints_MakerId", fields: [MakerId], references: [Id], onUpdate: NoAction, map: "FK_Complaints_AspNetUsers_MakerId")
+  Requests                                    Requests?          @relation(fields: [RequestId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Complaints_Requests_RequestId")
+  AspNetUsers_AspNetUsersToComplaints_UserId  AspNetUsers        @relation("AspNetUsersToComplaints_UserId", fields: [UserId], references: [Id], onUpdate: NoAction, map: "FK_Complaints_AspNetUsers_UserId")
+  ComplaintReplies                            ComplaintReplies[]
+
+  @@index([MakerId], map: "IX_Complaints_MakerId")
+  @@index([RequestId], map: "IX_Complaints_RequestId")
+  @@index([UserId], map: "IX_Complaints_UserId")
+}
+
+model Districts {
+  Id             Int              @id(map: "PK_Districts") @default(autoincrement())
+  EnglishName    String           @db.NVarChar(200)
+  ArabicName     String           @db.NVarChar(200)
+  RegionId       Int
+  AddedDate      DateTime
+  ModifiedDate   DateTime?
+  Createdby      String?          @db.NVarChar(Max)
+  UpdatedBy      String?          @db.NVarChar(Max)
+  Latitude       Float            @default(0.0000000000000000, map: "DF__Districts__Latit__6C190EBB")
+  Longitude      Float            @default(0.0000000000000000, map: "DF__Districts__Longi__6D0D32F4")
+  Regions        Regions          @relation(fields: [RegionId], references: [Id], onUpdate: NoAction, map: "FK_Districts_Regions_RegionId")
+  Addresses      Addresses[]
+  ShippingOrders ShippingOrders[]
+  UserAddresses  UserAddresses[]
+
+  @@index([RegionId], map: "IX_Districts_RegionId")
+}
+
+model FrequentlyAskedQuestions {
+  Id              Int            @id(map: "PK_FrequentlyAskedQuestions") @default(autoincrement())
+  GroupId         Int
+  QuestionArabic  String         @db.NVarChar(Max)
+  QuestionEnglish String         @db.NVarChar(Max)
+  AnswerArabic    String         @db.NVarChar(Max)
+  AnswerEnglish   String         @db.NVarChar(Max)
+  AddedDate       DateTime
+  ModifiedDate    DateTime?
+  Createdby       String?        @db.NVarChar(Max)
+  UpdatedBy       String?        @db.NVarChar(Max)
+  QuestionGroups  QuestionGroups @relation(fields: [GroupId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_FrequentlyAskedQuestions_QuestionGroups_GroupId")
+
+  @@index([GroupId], map: "IX_FrequentlyAskedQuestions_GroupId")
+}
+
+model Governorates {
+  Id           Int       @id(map: "PK_Governorates") @default(autoincrement())
+  EnglishName  String    @db.NVarChar(200)
+  ArabicName   String    @db.NVarChar(200)
+  AddedDate    DateTime
+  ModifiedDate DateTime?
+  Createdby    String?   @db.NVarChar(Max)
+  UpdatedBy    String?   @db.NVarChar(Max)
+  Latitude     Float     @default(0.0000000000000000, map: "DF__Governora__Latit__6E01572D")
+  Longitude    Float     @default(0.0000000000000000, map: "DF__Governora__Longi__6EF57B66")
+  Regions      Regions[]
+}
+
+model Offices {
+  Id             Int              @id(map: "PK_Offices") @default(autoincrement())
+  Longitude      Float
+  Latitude       Float
+  ArabicAddress  String           @db.NVarChar(Max)
+  AddedDate      DateTime
+  ModifiedDate   DateTime?
+  Createdby      String?          @db.NVarChar(Max)
+  UpdatedBy      String?          @db.NVarChar(Max)
+  EnglishAddress String           @default("N'", map: "DF__Offices__English__6FE99F9F") @db.NVarChar(Max)
+  RegionId       Int              @default(101, map: "DF__Offices__RegionI__70DDC3D8")
+  GPSLocation    String           @default("N'", map: "DF__Offices__GPSLoca__71D1E811") @db.NVarChar(Max)
+  Regions        Regions          @relation(fields: [RegionId], references: [Id], onUpdate: NoAction, map: "FK_Offices_Regions_RegionId")
+  ShippingOrders ShippingOrders[]
+
+  @@index([RegionId], map: "IX_Offices_RegionId")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model OrderStatus {
+  OrderStatusReference Int
+  OrderStatusName      String @db.NVarChar(50)
+
+  @@ignore
+}
+
+model PaymentTrasnsactionRequestPriceDifference {
+  PaymentTrasnsactionsId    Int
+  RequestPriceDifferencesId Int
+  SyncStatus                Int?
+  SyncStatusSa              Int?
+  PaymentTrasnsactions      PaymentTrasnsactions    @relation(fields: [PaymentTrasnsactionsId], references: [Id], onUpdate: NoAction, map: "FK_PaymentTrasnsactionRequestPriceDifference_PaymentTrasnsactions_PaymentTrasnsactionsId")
+  RequestPriceDifferences   RequestPriceDifferences @relation(fields: [RequestPriceDifferencesId], references: [Id], onUpdate: NoAction, map: "FK_PaymentTrasnsactionRequestPriceDifference_RequestPriceDifferences_RequestPriceDifferencesId")
+
+  @@id([PaymentTrasnsactionsId, RequestPriceDifferencesId], map: "PK_PaymentTrasnsactionRequestPriceDifference")
+  @@index([RequestPriceDifferencesId], map: "IX_PaymentTrasnsactionRequestPriceDifference_RequestPriceDifferencesId")
+}
+
+model PaymentTrasnsactions {
+  Id                                        Int                                         @id(map: "PK_PaymentTrasnsactions") @default(autoincrement())
+  MerchantRefNum                            String                                      @db.UniqueIdentifier
+  Price                                     Float
+  PaymentAmount                             Float?
+  FawryFees                                 Float?
+  PaymentMethod                             Int?
+  OrderStatus                               Int?
+  ReferenceNumber                           String?                                     @db.NVarChar(Max)
+  PaymentTime                               DateTime?
+  StatusCode                                String?                                     @db.NVarChar(Max)
+  StatusDescription                         String?                                     @db.NVarChar(Max)
+  RequestId                                 Int
+  UserId                                    String                                      @db.NVarChar(450)
+  AddedDate                                 DateTime
+  ModifiedDate                              DateTime?
+  Createdby                                 String?                                     @db.NVarChar(Max)
+  UpdatedBy                                 String?                                     @db.NVarChar(Max)
+  TransactionType                           Int                                         @default(0, map: "DF__PaymentTr__Trans__72C60C4A")
+  RefundedAmount                            Float?
+  SyncStatus                                Int?
+  SyncStatusSa                              Int?
+  Requests                                  Requests                                    @relation(fields: [RequestId], references: [Id], onUpdate: NoAction, map: "FK_PaymentTrasnsactions_Requests_RequestId")
+  AspNetUsers                               AspNetUsers                                 @relation(fields: [UserId], references: [Id], onUpdate: NoAction, map: "FK_PaymentTrasnsactions_AspNetUsers_UserId")
+  PaymentTrasnsactionRequestPriceDifference PaymentTrasnsactionRequestPriceDifference[]
+  PaymentTrasnsactionShippingOrder          PaymentTrasnsactionShippingOrder[]
+
+  @@index([RequestId], map: "IX_PaymentTrasnsactions_RequestId")
+  @@index([UserId], map: "IX_PaymentTrasnsactions_UserId")
+}
+
+model PaymentTrasnsactionShippingOrder {
+  PaymentTrasnsactionsId Int
+  ShippingOrdersId       Int
+  SyncStatus             Int?
+  SyncStatusSa           Int?
+  PaymentTrasnsactions   PaymentTrasnsactions @relation(fields: [PaymentTrasnsactionsId], references: [Id], onUpdate: NoAction, map: "FK_PaymentTrasnsactionShippingOrder_PaymentTrasnsactions_PaymentTrasnsactionsId")
+  ShippingOrders         ShippingOrders       @relation(fields: [ShippingOrdersId], references: [Id], onUpdate: NoAction, map: "FK_PaymentTrasnsactionShippingOrder_ShippingOrders_ShippingOrdersId")
+
+  @@id([PaymentTrasnsactionsId, ShippingOrdersId], map: "PK_PaymentTrasnsactionShippingOrder")
+  @@index([ShippingOrdersId], map: "IX_PaymentTrasnsactionShippingOrder_ShippingOrdersId")
+}
+
+model QuestionGroups {
+  Id                       Int                        @id(map: "PK_QuestionGroups") @default(autoincrement())
+  ArabicName               String                     @default("N'", map: "DF__QuestionG__Arabi__73BA3083") @db.NVarChar(Max)
+  EnglishName              String                     @default("N'", map: "DF__QuestionG__Engli__74AE54BC") @db.NVarChar(Max)
+  AddedDate                DateTime
+  ModifiedDate             DateTime?
+  Createdby                String?                    @db.NVarChar(Max)
+  UpdatedBy                String?                    @db.NVarChar(Max)
+  FrequentlyAskedQuestions FrequentlyAskedQuestions[]
+}
+
+model Regions {
+  Id             Int              @id(map: "PK_Regions") @default(autoincrement())
+  EnglishName    String           @db.NVarChar(200)
+  ArabicName     String           @db.NVarChar(200)
+  GovernorateId  Int
+  AddedDate      DateTime
+  ModifiedDate   DateTime?
+  Createdby      String?          @db.NVarChar(Max)
+  UpdatedBy      String?          @db.NVarChar(Max)
+  Latitude       Float            @default(0.0000000000000000, map: "DF__Regions__Latitud__75A278F5")
+  Longitude      Float            @default(0.0000000000000000, map: "DF__Regions__Longitu__76969D2E")
+  Governorates   Governorates     @relation(fields: [GovernorateId], references: [Id], onUpdate: NoAction, map: "FK_Regions_Governorates_GovernorateId")
+  Addresses      Addresses[]
+  Districts      Districts[]
+  Offices        Offices[]
+  ShippingOrders ShippingOrders[]
+  UserAddresses  UserAddresses[]
+
+  @@index([GovernorateId], map: "IX_Regions_GovernorateId")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model RequestAreaDifferenceStatus {
+  RequestAreaDifferenceReference Int
+  RequestAreaDifferenceStatus    String @db.NVarChar(50)
+
+  @@ignore
+}
+
+model RequestPriceDifferences {
+  Id                                        Int                                         @id(map: "PK_RequestPriceDifferences") @default(autoincrement())
+  Price                                     Float
+  RequestId                                 Int
+  AddedDate                                 DateTime
+  ModifiedDate                              DateTime?
+  Createdby                                 String?                                     @db.NVarChar(Max)
+  UpdatedBy                                 String?                                     @db.NVarChar(Max)
+  OrderStatus                               Int                                         @default(0, map: "DF__RequestPr__Order__778AC167")
+  AreaDifference                            Float?
+  Description                               String?                                     @db.NVarChar(Max)
+  RequestAreaDifferenceStatus               Int                                         @default(0, map: "DF__RequestPr__Reque__3B40CD36")
+  Requests                                  Requests                                    @relation(fields: [RequestId], references: [Id], onUpdate: NoAction, map: "FK_RequestPriceDifferences_Requests_RequestId")
+  PaymentTrasnsactionRequestPriceDifference PaymentTrasnsactionRequestPriceDifference[]
+
+  @@index([RequestId], map: "IX_RequestPriceDifferences_RequestId")
+}
+
+model RequestPrices {
+  Id           Int       @id(map: "PK_RequestPrices") @default(autoincrement())
+  UnitType     Int
+  AreaSizeFrom Float
+  AreaSizeUpTo Float
+  Price        Float
+  AddedDate    DateTime
+  ModifiedDate DateTime?
+  Createdby    String?   @db.NVarChar(Max)
+  UpdatedBy    String?   @db.NVarChar(Max)
+}
+
+model Requests {
+  Id                      Int                       @id(map: "PK_Requests") @default(autoincrement())
+  UnitType                Int
+  RequestStatus           Int
+  Area                    Float
+  Price                   Float
+  RequestNumber           String?                   @db.NVarChar(Max)
+  UserId                  String                    @default("N'", map: "DF__Requests__UserId__3A4CA8FD") @db.NVarChar(450)
+  AddedDate               DateTime
+  ModifiedDate            DateTime?
+  Createdby               String?                   @db.NVarChar(Max)
+  UpdatedBy               String?                   @db.NVarChar(Max)
+  AreaType                Int?
+  SyncStatus              Int?
+  HasPriceDifference      Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__HasPri__787EE5A0")
+  IsPaid                  Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__IsPaid__797309D9")
+  IsArchived              Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__IsArch__3587F3E0")
+  SyncStatusSa            Int?
+  AspNetUsers             AspNetUsers               @relation(fields: [UserId], references: [Id], onUpdate: NoAction, map: "FK_Requests_AspNetUsers_UserId")
+  Addresses               Addresses?
+  Complaints              Complaints[]
+  PaymentTrasnsactions    PaymentTrasnsactions[]
+  RequestPriceDifferences RequestPriceDifferences[]
+  RequestStatusChanges    RequestStatusChanges[]
+  ShippingOrders          ShippingOrders[]
+
+  @@index([UserId], map: "IX_Requests_UserId")
+}
+
+model RequestStatusChanges {
+  Id           Int       @id(map: "PK_RequestStatusChanges") @default(autoincrement())
+  RequestId    Int
+  Status       Int
+  Description  String?   @db.NVarChar(Max)
+  AddedDate    DateTime
+  ModifiedDate DateTime?
+  Createdby    String?   @db.NVarChar(Max)
+  UpdatedBy    String?   @db.NVarChar(Max)
+  Requests     Requests  @relation(fields: [RequestId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_RequestStatusChanges_Requests_RequestId")
+
+  @@index([RequestId], map: "IX_RequestStatusChanges_RequestId")
+}
+
+model ShippingOrders {
+  Id                               Int                                @id(map: "PK_ShippingOrders") @default(autoincrement())
+  RequestId                        Int
+  ShippingType                     Int
+  ShippingPrice                    Float
+  OfficeId                         Int?
+  Longitude                        Float?
+  Latitude                         Float?
+  DistrictId                       Int?
+  ShippingOrderStatus              Int
+  AddedDate                        DateTime
+  ModifiedDate                     DateTime?
+  Createdby                        String?                            @db.NVarChar(Max)
+  UpdatedBy                        String?                            @db.NVarChar(Max)
+  NumberOfCopies                   Int                                @default(0, map: "DF__ShippingO__Numbe__7A672E12")
+  ApartmentNumber                  Int?
+  Description                      String?                            @db.NVarChar(200)
+  FloorNumber                      Int?
+  PropertyNumber                   Int?
+  RegionId                         Int                                @default(101, map: "DF__ShippingO__Regio__7B5B524B")
+  StreetName                       String?                            @db.NVarChar(200)
+  UniqueMark                       String?                            @db.NVarChar(200)
+  ExtraCopiesPrice                 Float                              @default(0.0000000000000000, map: "DF__ShippingO__Extra__7C4F7684")
+  OrderStatus                      Int                                @default(0, map: "DF__ShippingO__Order__7D439ABD")
+  SyncStatus                       Int?
+  SyncStatusSa                     Int?
+  Districts                        Districts?                         @relation(fields: [DistrictId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ShippingOrders_Districts_DistrictId")
+  Offices                          Offices?                           @relation(fields: [OfficeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ShippingOrders_Offices_OfficeId")
+  Regions                          Regions                            @relation(fields: [RegionId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ShippingOrders_Regions_RegionId")
+  Requests                         Requests                           @relation(fields: [RequestId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ShippingOrders_Requests_RequestId")
+  PaymentTrasnsactionShippingOrder PaymentTrasnsactionShippingOrder[]
+
+  @@index([DistrictId], map: "IX_ShippingOrders_DistrictId")
+  @@index([OfficeId], map: "IX_ShippingOrders_OfficeId")
+  @@index([RegionId], map: "IX_ShippingOrders_RegionId")
+  @@index([RequestId], map: "IX_ShippingOrders_RequestId")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model ShippingOrderStatus {
+  ShippingOrderRefenrece Int
+  ShippingOrderStatus    String @db.NVarChar(50)
+
+  @@ignore
+}
+
+model ShippingPrices {
+  Id           Int       @id(map: "PK_ShippingPrices") @default(autoincrement())
+  Price        Float
+  ShippingType Int
+  AddedDate    DateTime
+  ModifiedDate DateTime?
+  Createdby    String?   @db.NVarChar(Max)
+  UpdatedBy    String?   @db.NVarChar(Max)
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B61E670EF53") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model UserAddresses {
+  Id            Int          @id(map: "PK_UserAddresses") @default(autoincrement())
+  Description   String?      @db.NVarChar(200)
+  DistrictId    Int?
+  UserProfileId Int          @unique(map: "IX_UserAddresses_UserProfileId")
+  AddedDate     DateTime
+  ModifiedDate  DateTime?
+  Createdby     String?      @db.NVarChar(Max)
+  UpdatedBy     String?      @db.NVarChar(Max)
+  RegionId      Int          @default(1, map: "DF__UserAddre__Regio__7E37BEF6")
+  SyncStatus    Int?
+  SyncStatusSa  Int?
+  Districts     Districts?   @relation(fields: [DistrictId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_UserAddresses_Districts_DistrictId")
+  Regions       Regions      @relation(fields: [RegionId], references: [Id], onUpdate: NoAction, map: "FK_UserAddresses_Regions_RegionId")
+  UserProfiles  UserProfiles @relation(fields: [UserProfileId], references: [Id], onUpdate: NoAction, map: "FK_UserAddresses_UserProfiles_UserProfileId")
+
+  @@index([DistrictId], map: "IX_UserAddresses_DistrictId")
+  @@index([RegionId], map: "IX_UserAddresses_RegionId")
+}
+
+model UserProfiles {
+  Id              Int            @id(map: "PK_UserProfiles") @default(autoincrement())
+  TelephoneNumber String         @default("N'", map: "DF__UserProfi__Telep__2DE6D218") @db.NVarChar(Max)
+  UserId          String         @unique(map: "IX_UserProfiles_UserId") @db.NVarChar(450)
+  AddedDate       DateTime
+  ModifiedDate    DateTime?
+  Createdby       String?        @db.NVarChar(Max)
+  UpdatedBy       String?        @db.NVarChar(Max)
+  HasWhatsApp     Boolean        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__UserProfi__HasWh__7F2BE32F")
+  PhoneNumberType Int?
+  SyncStatus      Int?
+  Description     String         @default("N'desc'", map: "DF__UserProfi__Descr__00200768") @db.NVarChar(200)
+  SyncStatusSa    Int?
+  AspNetUsers     AspNetUsers    @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_UserProfiles_AspNetUsers_UserId")
+  UserAddresses   UserAddresses?
+}
