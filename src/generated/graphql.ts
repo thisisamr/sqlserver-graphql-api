@@ -80,17 +80,24 @@ export type Dummy = {
 export type DummyReq = {
   AddedDate?: InputMaybe<Scalars['Date']>;
   Area?: InputMaybe<Scalars['Float']>;
-  CreatedBy?: InputMaybe<Scalars['String']>;
+  Createdby?: InputMaybe<Scalars['String']>;
   CurrentStatus?: InputMaybe<Scalars['Int']>;
-  Id: Scalars['Int'];
+  HasPriceDifference?: InputMaybe<Scalars['Boolean']>;
+  Id?: InputMaybe<Scalars['ID']>;
+  IsArchived?: InputMaybe<Scalars['Boolean']>;
+  IsPaid?: InputMaybe<Scalars['Boolean']>;
   ModifiedDate?: InputMaybe<Scalars['Date']>;
   Price?: InputMaybe<Scalars['Float']>;
-  RequeStstatus: Scalars['Int'];
   RequestNumber?: InputMaybe<Scalars['String']>;
   RequestStatus?: InputMaybe<Scalars['Int']>;
   UnitType: Scalars['Int'];
   UpdatedBy?: InputMaybe<Scalars['String']>;
   UserId?: InputMaybe<Scalars['String']>;
+  areatype?: InputMaybe<Scalars['Int']>;
+  haspricedifference?: InputMaybe<Scalars['Boolean']>;
+  isArchived?: InputMaybe<Scalars['Boolean']>;
+  ispaid?: InputMaybe<Scalars['Boolean']>;
+  syncstatus?: InputMaybe<Scalars['Int']>;
 };
 
 export type Edge = {
@@ -107,12 +114,12 @@ export type Mutation = {
 
 
 export type MutationAddDummyRequestsDataArgs = {
-  inputs: Array<DummyReq>;
+  inputs?: InputMaybe<Array<InputMaybe<DummyReq>>>;
 };
 
 
 export type MutationAddDummyUserDataArgs = {
-  inputs: Array<Dummy>;
+  inputs?: InputMaybe<Array<InputMaybe<Dummy>>>;
 };
 
 export type PageInfo = {
@@ -134,6 +141,7 @@ export type QueryNewRequestsQueryArgs = {
   after?: InputMaybe<Scalars['Int']>;
   afterDate: Scalars['Date'];
   first: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -157,7 +165,13 @@ export type QueryUsersQueryArgs = {
 
 export type Request = {
   __typename?: 'Request';
-  RequestStatus?: Maybe<Scalars['Int']>;
+  AreaType?: Maybe<Scalars['Int']>;
+  HasPriceDifference?: Maybe<Scalars['Boolean']>;
+  IsArchived?: Maybe<Scalars['Boolean']>;
+  IsPaid?: Maybe<Scalars['Boolean']>;
+  SyncStatus?: Maybe<Scalars['Int']>;
+  SyncStatusSa?: Maybe<Scalars['Int']>;
+  UpdatedBy?: Maybe<Scalars['String']>;
   addeddate?: Maybe<Scalars['Date']>;
   area?: Maybe<Scalars['Float']>;
   createdby?: Maybe<Scalars['String']>;
@@ -166,7 +180,7 @@ export type Request = {
   modifieddate?: Maybe<Scalars['Date']>;
   price?: Maybe<Scalars['Float']>;
   requestnumber?: Maybe<Scalars['String']>;
-  requeststatus: Scalars['Int'];
+  requeststatus?: Maybe<Scalars['Int']>;
   unittype: Scalars['Int'];
   updatedby?: Maybe<Scalars['String']>;
   user?: Maybe<AspNetUser>;
@@ -390,8 +404,8 @@ export type EdgeResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addDummyRequestsData?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationAddDummyRequestsDataArgs, 'inputs'>>;
-  addDummyUserData?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationAddDummyUserDataArgs, 'inputs'>>;
+  addDummyRequestsData?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationAddDummyRequestsDataArgs, never>>;
+  addDummyUserData?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<MutationAddDummyUserDataArgs, never>>;
 };
 
 export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
@@ -401,14 +415,20 @@ export type PageInfoResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  newRequestsQuery?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<QueryNewRequestsQueryArgs, 'afterDate' | 'first'>>;
+  newRequestsQuery?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<QueryNewRequestsQueryArgs, 'afterDate' | 'first' | 'id'>>;
   newUsersQuery?: Resolver<Maybe<ResolversTypes['UserResponse']>, ParentType, ContextType, RequireFields<QueryNewUsersQueryArgs, 'afterDate' | 'first'>>;
   requestsQuery?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<QueryRequestsQueryArgs, 'first'>>;
   usersQuery?: Resolver<Maybe<ResolversTypes['UserResponse']>, ParentType, ContextType, RequireFields<QueryUsersQueryArgs, 'first'>>;
 };
 
 export type RequestResolvers<ContextType = any, ParentType extends ResolversParentTypes['Request'] = ResolversParentTypes['Request']> = {
-  RequestStatus?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  AreaType?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  HasPriceDifference?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  IsArchived?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  IsPaid?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  SyncStatus?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  SyncStatusSa?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  UpdatedBy?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   addeddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   area?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   createdby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -417,7 +437,7 @@ export type RequestResolvers<ContextType = any, ParentType extends ResolversPare
   modifieddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   price?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   requestnumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  requeststatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  requeststatus?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   unittype?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   updatedby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['AspNetUser']>, ParentType, ContextType>;
