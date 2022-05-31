@@ -37,6 +37,18 @@ export const typeDefs = gql`
     cursor: String
     node: AspNetUser
   }
+  type UserprofileEdge {
+    cursor: Int
+    node: Userprofile
+  }
+  type PaymenttrasnsactionEdge {
+    cursor: Int
+    node: Paymenttrasnsaction
+  }
+  type ShippingorderEdge {
+    cursor: Int
+    node: Shippingorder
+  }
   type AddressEdge {
     cursor: Int
     node: Address
@@ -58,9 +70,22 @@ export const typeDefs = gql`
     pageInfo: UserPageInfo
     edges: [UserEdge]
   }
+
   type AddressResponse {
     pageInfo: PageInfo
     edges: [AddressEdge]
+  }
+  type PaymentTrasnsactionResponse {
+    pageInfo: PageInfo
+    edges: [PaymenttrasnsactionEdge]
+  }
+  type UserProfileResponse {
+    pageInfo: PageInfo
+    edges: [UserprofileEdge]
+  }
+  type ShippingOrderResponse {
+    pageInfo: PageInfo
+    edges: [ShippingorderEdge]
   }
   type Request {
     unittype: Int!
@@ -174,11 +199,79 @@ export const typeDefs = gql`
     regionid: Int
     sync_status: Int
   }
+  type Userprofile {
+    id: Int
+    telephonenumber: String
+    userid: String
+    addeddate: Date
+    modifieddate: Date
+    createdby: String
+    updatedby: String
+    haswhatsapp: Boolean
+    phonenumbertype: Int
+    description: String
+    sync_status: Int
+  }
+  type Shippingorder {
+    id: Int
+    requestid: Int
+    shippingtype: Int
+    shippingprice: Float
+    officeid: Int
+    longitude: Float
+    latitude: Float
+    districtid: Int
+    addeddate: Date
+    modifieddate: Date
+    createdby: String
+    updatedby: String
+    numberofcopies: Int
+    apartmentnumber: Int
+    description: String
+    floornumber: Int
+    propertynumber: Int
+    regionid: Int
+    streetname: String
+    uniquemark: String
+    extracopiesprice: Float
+    orderstatus: Int
+    sync_status: Int
+    shippingtype_name: String
+    shippingcenter_adress: String
+  }
+
+  type Paymenttrasnsaction {
+    id: Int
+    merchantrefnum: String
+    price: Float
+    paymentamount: Float
+    fawryfees: Float
+    paymentmethod: Int
+    orderstatus: Int
+    referencenumber: String
+    statuscode: String
+    statusdescription: String
+    requestid: Int
+    addeddate: Date
+    modifieddate: Date
+    createdby: String
+    updatedby: String
+    transactiontype: Int
+    refundedamount: Float
+    sync_status: Int
+    userid: String
+  }
 
   type Query {
     requestsQuery(first: Int!, after: Int): Response
     usersQuery(first: Int!, after: String): UserResponse
     addressesQuery(first: Int!, after: Int): AddressResponse
+    userprofilesQuery(first: Int!, after: Int): UserProfileResponse
+    shippingordersQuery(first: Int!, after: Int): ShippingOrderResponse
+    paymenttrasnsactionsQuery(
+      first: Int!
+      after: Int
+    ): PaymentTrasnsactionResponse
     newUsersQuery(first: Int!, after: String, afterDate: Date!): UserResponse
     newRequestsQuery(
       first: Int!

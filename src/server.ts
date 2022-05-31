@@ -18,6 +18,9 @@ import { UserResolver } from "./graphql/Resolvers/UsersResolver.js";
 import { createToken, getUserFromToken } from "./lib/auth";
 import prisma from "./prisma/prisma";
 import { AddressesResolver } from "./graphql/Resolvers/addressesResolver.js";
+import { UserProfileResolver } from "./graphql/Resolvers/UserProfileResolver.js";
+import { ShippingOrdersResolver } from "./graphql/Resolvers/ShippingOrdersResolver.js";
+import { PaymentTrasnsactionsResolver } from "./graphql/Resolvers/PaymentTrasnsactionsResolver.js";
 
 const pubSub = new PubSub();
 
@@ -28,7 +31,14 @@ async function startApolloServer(t: any, r: any) {
   const httpServer = http.createServer(app);
   const schema = makeExecutableSchema({
     typeDefs: [constraintDirectiveTypeDefs, typeDefs],
-    resolvers: [RequestResolver, UserResolver, AddressesResolver],
+    resolvers: [
+      UserResolver,
+      RequestResolver,
+      AddressesResolver,
+      UserProfileResolver,
+      ShippingOrdersResolver,
+      PaymentTrasnsactionsResolver,
+    ],
   });
   const server = new ApolloServer({
     schema: constraintDirective()(schema),
@@ -55,7 +65,14 @@ async function startApolloServer(t: any, r: any) {
   );
   console.log(`Server ready at http://localhost:4001${server.graphqlPath}`);
 }
-const resolvers = [UserResolver, RequestResolver, AddressesResolver];
+const resolvers = [
+  UserResolver,
+  RequestResolver,
+  AddressesResolver,
+  UserProfileResolver,
+  ShippingOrdersResolver,
+  PaymentTrasnsactionsResolver,
+];
 startApolloServer(typeDefs, resolvers).then(() => {
   console.log(" 🚀🚀🚀 Cheers🍺");
 });

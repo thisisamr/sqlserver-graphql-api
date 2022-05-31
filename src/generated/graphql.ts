@@ -22,7 +22,6 @@ export type Address = {
   apartment_number?: Maybe<Scalars['Int']>;
   createdby?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  districtId?: Maybe<Scalars['Int']>;
   districtid?: Maybe<Scalars['Int']>;
   floor_number?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
@@ -31,10 +30,9 @@ export type Address = {
   regionid?: Maybe<Scalars['Int']>;
   requestid?: Maybe<Scalars['Int']>;
   streetname?: Maybe<Scalars['String']>;
-  syncs_tatus?: Maybe<Scalars['Int']>;
+  sync_status?: Maybe<Scalars['Int']>;
   unique_mark?: Maybe<Scalars['String']>;
   updatedby?: Maybe<Scalars['String']>;
-  userprofileid?: Maybe<Scalars['Int']>;
 };
 
 export type AddressEdge = {
@@ -153,12 +151,50 @@ export type PageInfo = {
   hasNextPage?: Maybe<Scalars['Boolean']>;
 };
 
+export type PaymentTrasnsactionResponse = {
+  __typename?: 'PaymentTrasnsactionResponse';
+  edges?: Maybe<Array<Maybe<PaymenttrasnsactionEdge>>>;
+  pageInfo?: Maybe<PageInfo>;
+};
+
+export type Paymenttrasnsaction = {
+  __typename?: 'Paymenttrasnsaction';
+  addeddate?: Maybe<Scalars['Date']>;
+  createdby?: Maybe<Scalars['String']>;
+  fawryfees?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Int']>;
+  merchantrefnum?: Maybe<Scalars['String']>;
+  modifieddate?: Maybe<Scalars['Date']>;
+  orderstatus?: Maybe<Scalars['Int']>;
+  paymentamount?: Maybe<Scalars['Float']>;
+  paymentmethod?: Maybe<Scalars['Int']>;
+  price?: Maybe<Scalars['Float']>;
+  referencenumber?: Maybe<Scalars['String']>;
+  refundedamount?: Maybe<Scalars['Float']>;
+  requestid?: Maybe<Scalars['Int']>;
+  statuscode?: Maybe<Scalars['String']>;
+  statusdescription?: Maybe<Scalars['String']>;
+  sync_status?: Maybe<Scalars['Int']>;
+  transactiontype?: Maybe<Scalars['Int']>;
+  updatedby?: Maybe<Scalars['String']>;
+  userid?: Maybe<Scalars['String']>;
+};
+
+export type PaymenttrasnsactionEdge = {
+  __typename?: 'PaymenttrasnsactionEdge';
+  cursor?: Maybe<Scalars['Int']>;
+  node?: Maybe<Paymenttrasnsaction>;
+};
+
 export type Query = {
   __typename?: 'Query';
   addressesQuery?: Maybe<AddressResponse>;
   newRequestsQuery?: Maybe<Response>;
   newUsersQuery?: Maybe<UserResponse>;
+  paymenttrasnsactionsQuery?: Maybe<PaymentTrasnsactionResponse>;
   requestsQuery?: Maybe<Response>;
+  shippingordersQuery?: Maybe<ShippingOrderResponse>;
+  userprofilesQuery?: Maybe<UserProfileResponse>;
   usersQuery?: Maybe<UserResponse>;
 };
 
@@ -184,7 +220,25 @@ export type QueryNewUsersQueryArgs = {
 };
 
 
+export type QueryPaymenttrasnsactionsQueryArgs = {
+  after?: InputMaybe<Scalars['Int']>;
+  first: Scalars['Int'];
+};
+
+
 export type QueryRequestsQueryArgs = {
+  after?: InputMaybe<Scalars['Int']>;
+  first: Scalars['Int'];
+};
+
+
+export type QueryShippingordersQueryArgs = {
+  after?: InputMaybe<Scalars['Int']>;
+  first: Scalars['Int'];
+};
+
+
+export type QueryUserprofilesQueryArgs = {
   after?: InputMaybe<Scalars['Int']>;
   first: Scalars['Int'];
 };
@@ -231,6 +285,48 @@ export enum Role {
   Member = 'MEMBER'
 }
 
+export type ShippingOrderResponse = {
+  __typename?: 'ShippingOrderResponse';
+  edges?: Maybe<Array<Maybe<ShippingorderEdge>>>;
+  pageInfo?: Maybe<PageInfo>;
+};
+
+export type Shippingorder = {
+  __typename?: 'Shippingorder';
+  addeddate?: Maybe<Scalars['Date']>;
+  apartmentnumber?: Maybe<Scalars['Int']>;
+  createdby?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  districtid?: Maybe<Scalars['Int']>;
+  extracopiesprice?: Maybe<Scalars['Float']>;
+  floornumber?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  latitude?: Maybe<Scalars['Float']>;
+  longitude?: Maybe<Scalars['Float']>;
+  modifieddate?: Maybe<Scalars['Date']>;
+  numberofcopies?: Maybe<Scalars['Int']>;
+  officeid?: Maybe<Scalars['Int']>;
+  orderstatus?: Maybe<Scalars['Int']>;
+  propertynumber?: Maybe<Scalars['Int']>;
+  regionid?: Maybe<Scalars['Int']>;
+  requestid?: Maybe<Scalars['Int']>;
+  shippingcenter_adress?: Maybe<Scalars['String']>;
+  shippingprice?: Maybe<Scalars['Float']>;
+  shippingtype?: Maybe<Scalars['Int']>;
+  shippingtype_name?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['Int']>;
+  streetname?: Maybe<Scalars['String']>;
+  sync_status?: Maybe<Scalars['Int']>;
+  uniquemark?: Maybe<Scalars['String']>;
+  updatedby?: Maybe<Scalars['String']>;
+};
+
+export type ShippingorderEdge = {
+  __typename?: 'ShippingorderEdge';
+  cursor?: Maybe<Scalars['Int']>;
+  node?: Maybe<Shippingorder>;
+};
+
 export type User = {
   __typename?: 'User';
   email: Scalars['String'];
@@ -249,10 +345,37 @@ export type UserPageInfo = {
   hasNextPage?: Maybe<Scalars['Boolean']>;
 };
 
+export type UserProfileResponse = {
+  __typename?: 'UserProfileResponse';
+  edges?: Maybe<Array<Maybe<UserprofileEdge>>>;
+  pageInfo?: Maybe<PageInfo>;
+};
+
 export type UserResponse = {
   __typename?: 'UserResponse';
   edges?: Maybe<Array<Maybe<UserEdge>>>;
   pageInfo?: Maybe<UserPageInfo>;
+};
+
+export type Userprofile = {
+  __typename?: 'Userprofile';
+  addeddate?: Maybe<Scalars['Date']>;
+  createdby?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  haswhatsapp?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['Int']>;
+  modifieddate?: Maybe<Scalars['Date']>;
+  phonenumbertype?: Maybe<Scalars['Int']>;
+  sync_status?: Maybe<Scalars['Int']>;
+  telephonenumber?: Maybe<Scalars['String']>;
+  updatedby?: Maybe<Scalars['String']>;
+  userid?: Maybe<Scalars['String']>;
+};
+
+export type UserprofileEdge = {
+  __typename?: 'UserprofileEdge';
+  cursor?: Maybe<Scalars['Int']>;
+  node?: Maybe<Userprofile>;
 };
 
 
@@ -338,15 +461,24 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
+  PaymentTrasnsactionResponse: ResolverTypeWrapper<PaymentTrasnsactionResponse>;
+  Paymenttrasnsaction: ResolverTypeWrapper<Paymenttrasnsaction>;
+  PaymenttrasnsactionEdge: ResolverTypeWrapper<PaymenttrasnsactionEdge>;
   Query: ResolverTypeWrapper<{}>;
   Request: ResolverTypeWrapper<Request>;
   Response: ResolverTypeWrapper<Response>;
   Role: Role;
+  ShippingOrderResponse: ResolverTypeWrapper<ShippingOrderResponse>;
+  Shippingorder: ResolverTypeWrapper<Shippingorder>;
+  ShippingorderEdge: ResolverTypeWrapper<ShippingorderEdge>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
   UserEdge: ResolverTypeWrapper<UserEdge>;
   UserPageInfo: ResolverTypeWrapper<UserPageInfo>;
+  UserProfileResponse: ResolverTypeWrapper<UserProfileResponse>;
   UserResponse: ResolverTypeWrapper<UserResponse>;
+  Userprofile: ResolverTypeWrapper<Userprofile>;
+  UserprofileEdge: ResolverTypeWrapper<UserprofileEdge>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -365,14 +497,23 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Mutation: {};
   PageInfo: PageInfo;
+  PaymentTrasnsactionResponse: PaymentTrasnsactionResponse;
+  Paymenttrasnsaction: Paymenttrasnsaction;
+  PaymenttrasnsactionEdge: PaymenttrasnsactionEdge;
   Query: {};
   Request: Request;
   Response: Response;
+  ShippingOrderResponse: ShippingOrderResponse;
+  Shippingorder: Shippingorder;
+  ShippingorderEdge: ShippingorderEdge;
   String: Scalars['String'];
   User: User;
   UserEdge: UserEdge;
   UserPageInfo: UserPageInfo;
+  UserProfileResponse: UserProfileResponse;
   UserResponse: UserResponse;
+  Userprofile: Userprofile;
+  UserprofileEdge: UserprofileEdge;
 };
 
 export type ConstraintDirectiveArgs = {
@@ -399,7 +540,6 @@ export type AddressResolvers<ContextType = any, ParentType extends ResolversPare
   apartment_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  districtId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   districtid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   floor_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -408,10 +548,9 @@ export type AddressResolvers<ContextType = any, ParentType extends ResolversPare
   regionid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   requestid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   streetname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  syncs_tatus?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  sync_status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   unique_mark?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  userprofileid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -475,11 +614,49 @@ export type PageInfoResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type PaymentTrasnsactionResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaymentTrasnsactionResponse'] = ResolversParentTypes['PaymentTrasnsactionResponse']> = {
+  edges?: Resolver<Maybe<Array<Maybe<ResolversTypes['PaymenttrasnsactionEdge']>>>, ParentType, ContextType>;
+  pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PaymenttrasnsactionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Paymenttrasnsaction'] = ResolversParentTypes['Paymenttrasnsaction']> = {
+  addeddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  createdby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  fawryfees?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  merchantrefnum?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  modifieddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  orderstatus?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  paymentamount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  paymentmethod?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  referencenumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  refundedamount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  requestid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  statuscode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  statusdescription?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sync_status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  transactiontype?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  updatedby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PaymenttrasnsactionEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaymenttrasnsactionEdge'] = ResolversParentTypes['PaymenttrasnsactionEdge']> = {
+  cursor?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Paymenttrasnsaction']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   addressesQuery?: Resolver<Maybe<ResolversTypes['AddressResponse']>, ParentType, ContextType, RequireFields<QueryAddressesQueryArgs, 'first'>>;
   newRequestsQuery?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<QueryNewRequestsQueryArgs, 'afterDate' | 'first' | 'id'>>;
   newUsersQuery?: Resolver<Maybe<ResolversTypes['UserResponse']>, ParentType, ContextType, RequireFields<QueryNewUsersQueryArgs, 'afterDate' | 'first'>>;
+  paymenttrasnsactionsQuery?: Resolver<Maybe<ResolversTypes['PaymentTrasnsactionResponse']>, ParentType, ContextType, RequireFields<QueryPaymenttrasnsactionsQueryArgs, 'first'>>;
   requestsQuery?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<QueryRequestsQueryArgs, 'first'>>;
+  shippingordersQuery?: Resolver<Maybe<ResolversTypes['ShippingOrderResponse']>, ParentType, ContextType, RequireFields<QueryShippingordersQueryArgs, 'first'>>;
+  userprofilesQuery?: Resolver<Maybe<ResolversTypes['UserProfileResponse']>, ParentType, ContextType, RequireFields<QueryUserprofilesQueryArgs, 'first'>>;
   usersQuery?: Resolver<Maybe<ResolversTypes['UserResponse']>, ParentType, ContextType, RequireFields<QueryUsersQueryArgs, 'first'>>;
 };
 
@@ -513,6 +690,48 @@ export type ResponseResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ShippingOrderResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ShippingOrderResponse'] = ResolversParentTypes['ShippingOrderResponse']> = {
+  edges?: Resolver<Maybe<Array<Maybe<ResolversTypes['ShippingorderEdge']>>>, ParentType, ContextType>;
+  pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ShippingorderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Shippingorder'] = ResolversParentTypes['Shippingorder']> = {
+  addeddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  apartmentnumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  districtid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  extracopiesprice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  floornumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  latitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  longitude?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  modifieddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  numberofcopies?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  officeid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  orderstatus?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  propertynumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  regionid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  requestid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  shippingcenter_adress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  shippingprice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  shippingtype?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  shippingtype_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  streetname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sync_status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  uniquemark?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ShippingorderEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['ShippingorderEdge'] = ResolversParentTypes['ShippingorderEdge']> = {
+  cursor?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Shippingorder']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -531,9 +750,36 @@ export type UserPageInfoResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserProfileResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserProfileResponse'] = ResolversParentTypes['UserProfileResponse']> = {
+  edges?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserprofileEdge']>>>, ParentType, ContextType>;
+  pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserResponse'] = ResolversParentTypes['UserResponse']> = {
   edges?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserEdge']>>>, ParentType, ContextType>;
   pageInfo?: Resolver<Maybe<ResolversTypes['UserPageInfo']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UserprofileResolvers<ContextType = any, ParentType extends ResolversParentTypes['Userprofile'] = ResolversParentTypes['Userprofile']> = {
+  addeddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  createdby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  haswhatsapp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  modifieddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  phonenumbertype?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  sync_status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  telephonenumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UserprofileEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserprofileEdge'] = ResolversParentTypes['UserprofileEdge']> = {
+  cursor?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Userprofile']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -546,13 +792,22 @@ export type Resolvers<ContextType = any> = {
   Edge?: EdgeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
+  PaymentTrasnsactionResponse?: PaymentTrasnsactionResponseResolvers<ContextType>;
+  Paymenttrasnsaction?: PaymenttrasnsactionResolvers<ContextType>;
+  PaymenttrasnsactionEdge?: PaymenttrasnsactionEdgeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Request?: RequestResolvers<ContextType>;
   Response?: ResponseResolvers<ContextType>;
+  ShippingOrderResponse?: ShippingOrderResponseResolvers<ContextType>;
+  Shippingorder?: ShippingorderResolvers<ContextType>;
+  ShippingorderEdge?: ShippingorderEdgeResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserEdge?: UserEdgeResolvers<ContextType>;
   UserPageInfo?: UserPageInfoResolvers<ContextType>;
+  UserProfileResponse?: UserProfileResponseResolvers<ContextType>;
   UserResponse?: UserResponseResolvers<ContextType>;
+  Userprofile?: UserprofileResolvers<ContextType>;
+  UserprofileEdge?: UserprofileEdgeResolvers<ContextType>;
 };
 
 export type DirectiveResolvers<ContextType = any> = {
