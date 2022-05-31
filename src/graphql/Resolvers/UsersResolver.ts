@@ -15,7 +15,7 @@ export interface Icontext extends Context {
 }
 export const UserResolver: Resolvers<Icontext> = {
   Query: {
-    usersQuery: async (_, __, { prisma }) => {
+    usersQuery: async (_, __, { prisma, req }) => {
       let queryResults = null;
       if (__.after) {
         //check for a a cursor
