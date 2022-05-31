@@ -17,6 +17,7 @@ import { typeDefs } from "./graphql/typeDefs.js";
 import { UserResolver } from "./graphql/Resolvers/UsersResolver.js";
 import { createToken, getUserFromToken } from "./lib/auth";
 import prisma from "./prisma/prisma";
+import { AddressesResolver } from "./graphql/Resolvers/addressesResolver.js";
 
 const pubSub = new PubSub();
 
@@ -27,7 +28,7 @@ async function startApolloServer(t: any, r: any) {
   const httpServer = http.createServer(app);
   const schema = makeExecutableSchema({
     typeDefs: [constraintDirectiveTypeDefs, typeDefs],
-    resolvers: [RequestResolver, UserResolver],
+    resolvers: [RequestResolver, UserResolver, AddressesResolver],
   });
   const server = new ApolloServer({
     schema: constraintDirective()(schema),
@@ -54,7 +55,7 @@ async function startApolloServer(t: any, r: any) {
   );
   console.log(`Server ready at http://localhost:4001${server.graphqlPath}`);
 }
-const resolvers = [UserResolver, RequestResolver];
+const resolvers = [UserResolver, RequestResolver, AddressesResolver];
 startApolloServer(typeDefs, resolvers).then(() => {
   console.log(" 🚀🚀🚀 Cheers🍺");
 });

@@ -28,16 +28,7 @@ export const typeDefs = gql`
     email: String!
     password: String!
   }
-  # type Request {
-  #   Id: Int!
-  #   UnitType: Int
-  #   RequestStatus: Int
-  #   Area: Float
-  #   Price: Float
-  #   RequestNumber: String
-  #   UserId: String
-  #   user: AspNetUser
-  # }
+
   type Edge {
     cursor: Int
     node: Request
@@ -45,6 +36,10 @@ export const typeDefs = gql`
   type UserEdge {
     cursor: String
     node: AspNetUser
+  }
+  type AddressEdge {
+    cursor: Int
+    node: Address
   }
 
   type PageInfo {
@@ -63,7 +58,10 @@ export const typeDefs = gql`
     pageInfo: UserPageInfo
     edges: [UserEdge]
   }
-
+  type AddressResponse {
+    pageInfo: PageInfo
+    edges: [AddressEdge]
+  }
   type Request {
     unittype: Int!
     requeststatus: Int
@@ -160,15 +158,27 @@ export const typeDefs = gql`
     SyncStatus: Int
   }
   type Address {
-    Id: ID
-    Description: String
-    DistrictId: Int
-    UserProfileId: Int
+    id: Int!
+    description: String
+    districtid: Int
+    property_number: String
+    floor_number: Int
+    apartment_number: Int
+    streetname: String
+    unique_mark: String
+    requestid: Int
+    addeddate: Date
+    modifieddate: Date
+    createdby: String
+    updatedby: String
+    regionid: Int
+    sync_status: Int
   }
 
   type Query {
     requestsQuery(first: Int!, after: Int): Response
     usersQuery(first: Int!, after: String): UserResponse
+    addressesQuery(first: Int!, after: Int): AddressResponse
     newUsersQuery(first: Int!, after: String, afterDate: Date!): UserResponse
     newRequestsQuery(
       first: Int!

@@ -20,7 +20,7 @@ export const RequestResolver: Resolvers<Icontext> = {
         //check for a a cursor
         queryResults = await prisma.requests.findMany({
           where: {
-            IsPaid: true,
+            IsPaid: { equals: true },
           },
           take: __.first,
           skip: 1,
@@ -30,6 +30,9 @@ export const RequestResolver: Resolvers<Icontext> = {
         });
       } else {
         queryResults = await prisma.requests.findMany({
+          where: {
+            IsPaid: { equals: true },
+          },
           take: __.first,
         });
       }
@@ -39,6 +42,9 @@ export const RequestResolver: Resolvers<Icontext> = {
         const myCursor = lastRequestResult.Id;
 
         const secondQueryResults = await prisma.requests.findMany({
+          where: {
+            IsPaid: { equals: true },
+          },
           take: __.first,
           cursor: {
             Id: myCursor,

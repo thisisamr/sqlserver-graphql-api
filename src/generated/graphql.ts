@@ -18,10 +18,35 @@ export type Scalars = {
 
 export type Address = {
   __typename?: 'Address';
-  Description?: Maybe<Scalars['String']>;
-  DistrictId?: Maybe<Scalars['Int']>;
-  Id?: Maybe<Scalars['ID']>;
-  UserProfileId?: Maybe<Scalars['Int']>;
+  addeddate?: Maybe<Scalars['Date']>;
+  apartment_number?: Maybe<Scalars['Int']>;
+  createdby?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  districtId?: Maybe<Scalars['Int']>;
+  districtid?: Maybe<Scalars['Int']>;
+  floor_number?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  modifieddate?: Maybe<Scalars['Date']>;
+  property_number?: Maybe<Scalars['String']>;
+  regionid?: Maybe<Scalars['Int']>;
+  requestid?: Maybe<Scalars['Int']>;
+  streetname?: Maybe<Scalars['String']>;
+  syncs_tatus?: Maybe<Scalars['Int']>;
+  unique_mark?: Maybe<Scalars['String']>;
+  updatedby?: Maybe<Scalars['String']>;
+  userprofileid?: Maybe<Scalars['Int']>;
+};
+
+export type AddressEdge = {
+  __typename?: 'AddressEdge';
+  cursor?: Maybe<Scalars['Int']>;
+  node?: Maybe<Address>;
+};
+
+export type AddressResponse = {
+  __typename?: 'AddressResponse';
+  edges?: Maybe<Array<Maybe<AddressEdge>>>;
+  pageInfo?: Maybe<PageInfo>;
 };
 
 export type AspNetUser = {
@@ -130,10 +155,17 @@ export type PageInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  addressesQuery?: Maybe<AddressResponse>;
   newRequestsQuery?: Maybe<Response>;
   newUsersQuery?: Maybe<UserResponse>;
   requestsQuery?: Maybe<Response>;
   usersQuery?: Maybe<UserResponse>;
+};
+
+
+export type QueryAddressesQueryArgs = {
+  after?: InputMaybe<Scalars['Int']>;
+  first: Scalars['Int'];
 };
 
 
@@ -293,6 +325,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Address: ResolverTypeWrapper<Address>;
+  AddressEdge: ResolverTypeWrapper<AddressEdge>;
+  AddressResponse: ResolverTypeWrapper<AddressResponse>;
   AspNetUser: ResolverTypeWrapper<AspNetUser>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
@@ -318,6 +352,8 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Address: Address;
+  AddressEdge: AddressEdge;
+  AddressResponse: AddressResponse;
   AspNetUser: AspNetUser;
   Boolean: Scalars['Boolean'];
   Date: Scalars['Date'];
@@ -359,10 +395,35 @@ export type ConstraintDirectiveArgs = {
 export type ConstraintDirectiveResolver<Result, Parent, ContextType = any, Args = ConstraintDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AddressResolvers<ContextType = any, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
-  Description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  DistrictId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  Id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  UserProfileId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  addeddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  apartment_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  createdby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  districtId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  districtid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  floor_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  modifieddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  property_number?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  regionid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  requestid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  streetname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  syncs_tatus?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  unique_mark?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userprofileid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AddressEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['AddressEdge'] = ResolversParentTypes['AddressEdge']> = {
+  cursor?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  node?: Resolver<Maybe<ResolversTypes['Address']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AddressResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AddressResponse'] = ResolversParentTypes['AddressResponse']> = {
+  edges?: Resolver<Maybe<Array<Maybe<ResolversTypes['AddressEdge']>>>, ParentType, ContextType>;
+  pageInfo?: Resolver<Maybe<ResolversTypes['PageInfo']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -415,6 +476,7 @@ export type PageInfoResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  addressesQuery?: Resolver<Maybe<ResolversTypes['AddressResponse']>, ParentType, ContextType, RequireFields<QueryAddressesQueryArgs, 'first'>>;
   newRequestsQuery?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<QueryNewRequestsQueryArgs, 'afterDate' | 'first' | 'id'>>;
   newUsersQuery?: Resolver<Maybe<ResolversTypes['UserResponse']>, ParentType, ContextType, RequireFields<QueryNewUsersQueryArgs, 'afterDate' | 'first'>>;
   requestsQuery?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<QueryRequestsQueryArgs, 'first'>>;
@@ -477,6 +539,8 @@ export type UserResponseResolvers<ContextType = any, ParentType extends Resolver
 
 export type Resolvers<ContextType = any> = {
   Address?: AddressResolvers<ContextType>;
+  AddressEdge?: AddressEdgeResolvers<ContextType>;
+  AddressResponse?: AddressResponseResolvers<ContextType>;
   AspNetUser?: AspNetUserResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Edge?: EdgeResolvers<ContextType>;
