@@ -26,14 +26,6 @@ const pubSub = new PubSub();
 
 async function startApolloServer(t: any, r: any) {
   const app = express();
-  // app.use((req, res, next) => {
-  //   console.log(req.headers);
-  //   if (!req.headers.asd || req.headers.asd != process.env.APIKEY) {
-  //     return res.status(401).json({ message: "No auth" });
-  //   } else {
-  //     next();
-  //   }
-  // });
   app.use(cookieParser());
 
   const httpServer = http.createServer(app);

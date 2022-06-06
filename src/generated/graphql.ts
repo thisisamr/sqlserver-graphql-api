@@ -260,6 +260,7 @@ export type Request = {
   UpdatedBy?: Maybe<Scalars['String']>;
   addeddate?: Maybe<Scalars['Date']>;
   area?: Maybe<Scalars['Float']>;
+  areatype?: Maybe<Scalars['Int']>;
   createdby?: Maybe<Scalars['String']>;
   currentstatus?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
@@ -314,7 +315,6 @@ export type Shippingorder = {
   shippingprice?: Maybe<Scalars['Float']>;
   shippingtype?: Maybe<Scalars['Int']>;
   shippingtype_name?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['Int']>;
   streetname?: Maybe<Scalars['String']>;
   sync_status?: Maybe<Scalars['Int']>;
   uniquemark?: Maybe<Scalars['String']>;
@@ -670,6 +670,7 @@ export type RequestResolvers<ContextType = any, ParentType extends ResolversPare
   UpdatedBy?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   addeddate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   area?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  areatype?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdby?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   currentstatus?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -718,7 +719,6 @@ export type ShippingorderResolvers<ContextType = any, ParentType extends Resolve
   shippingprice?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   shippingtype?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   shippingtype_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   streetname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   sync_status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   uniquemark?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
