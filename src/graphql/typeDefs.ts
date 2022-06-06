@@ -108,6 +108,7 @@ export const typeDefs = gql`
     IsArchived: Boolean
     SyncStatusSa: Int
     id: Int!
+    areatype: Int
   }
 
   type AspNetUser {

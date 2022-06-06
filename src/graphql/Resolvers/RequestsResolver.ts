@@ -70,6 +70,7 @@ export const RequestResolver: Resolvers<Icontext> = {
               createdby: request.Createdby,
               updatedby: request.UpdatedBy,
               area: request.Area,
+              areatype: request.AreaType,
               requestnumber: request.RequestNumber,
               userid: request.UserId,
             },
