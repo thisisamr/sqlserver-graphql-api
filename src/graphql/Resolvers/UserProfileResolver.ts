@@ -1,10 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { AuthenticationError, Context } from "apollo-server-core";
-import bcrypt from "bcrypt";
-import cookie from "cookie";
+import { Context } from "apollo-server-core";
 import { IncomingMessage, OutgoingMessage } from "http";
-import { Request, Resolvers, User } from "../../generated/graphql";
-import prisma from "../../prisma/prisma";
+import { Resolvers, User } from "../../generated/graphql";
 export interface Icontext extends Context {
   prisma: PrismaClient;
   user: User;
@@ -30,7 +27,7 @@ export const UserProfileResolver: Resolvers<Icontext> = {
           take: first,
         });
       }
-      if (queryResults.length > 0) {
+      if (queryResults.length > 1) {
         const lastuserProfilesResult = queryResults[queryResults.length - 1];
         const myCursor = lastuserProfilesResult.Id;
 
@@ -76,6 +73,4 @@ export const UserProfileResolver: Resolvers<Icontext> = {
       };
     },
   },
-  // for testing
-  Mutation: {},
 };

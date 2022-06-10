@@ -21,17 +21,18 @@ import { AddressesResolver } from "./graphql/Resolvers/addressesResolver.js";
 import { UserProfileResolver } from "./graphql/Resolvers/UserProfileResolver.js";
 import { ShippingOrdersResolver } from "./graphql/Resolvers/ShippingOrdersResolver.js";
 import { PaymentTrasnsactionsResolver } from "./graphql/Resolvers/PaymentTrasnsactionsResolver.js";
+import { health } from "./graphql/Resolvers/healthResolver.js";
 
 const pubSub = new PubSub();
 
 async function startApolloServer(t: any, r: any) {
   const app = express();
   app.use(cookieParser());
-
   const httpServer = http.createServer(app);
   const schema = makeExecutableSchema({
     typeDefs: [constraintDirectiveTypeDefs, typeDefs],
     resolvers: [
+      health,
       UserResolver,
       RequestResolver,
       AddressesResolver,
@@ -58,7 +59,7 @@ async function startApolloServer(t: any, r: any) {
   await server.start();
   server.applyMiddleware({
     app,
-    cors: { origin: "http://localhost:3000", credentials: true },
+    cors: { origin: "*", credentials: true },
   });
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: 4001 }, resolve)
@@ -66,6 +67,7 @@ async function startApolloServer(t: any, r: any) {
   console.log(`Server ready at http://localhost:4001${server.graphqlPath}`);
 }
 const resolvers = [
+  health,
   UserResolver,
   RequestResolver,
   AddressesResolver,

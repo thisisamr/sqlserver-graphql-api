@@ -1,10 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { AuthenticationError, Context } from "apollo-server-core";
-import bcrypt from "bcrypt";
-import cookie from "cookie";
+import { Context } from "apollo-server-core";
 import { IncomingMessage, OutgoingMessage } from "http";
-import { Request, Resolvers, User } from "../../generated/graphql";
-import prisma from "../../prisma/prisma";
+import { Resolvers, User } from "../../generated/graphql";
 export interface Icontext extends Context {
   prisma: PrismaClient;
   user: User;
@@ -47,7 +44,7 @@ export const PaymentTrasnsactionsResolver: Resolvers<Icontext> = {
             hasNextPage:
               secondQueryResults.length >= first ||
               (secondQueryResults.length < first &&
-                secondQueryResults.length > 0),
+                secondQueryResults.length > 1),
           },
           edges: queryResults.map((paymentTrasnsaction) => ({
             cursor: paymentTrasnsaction.Id,
@@ -85,6 +82,4 @@ export const PaymentTrasnsactionsResolver: Resolvers<Icontext> = {
       };
     },
   },
-  // for testing
-  Mutation: {},
 };

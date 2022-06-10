@@ -136,53 +136,6 @@ export const typeDefs = gql`
     accessfailedcount: Int
     sync_status: Int
   }
-  input DummyReq {
-    Id: ID
-    HasPriceDifference: Boolean
-    IsPaid: Boolean
-    IsArchived: Boolean
-    UnitType: Int!
-    RequestStatus: Int
-    Area: Float
-    Price: Float
-    RequestNumber: String
-    UserId: String
-    AddedDate: Date
-    ModifiedDate: Date
-    Createdby: String
-    UpdatedBy: String
-    CurrentStatus: Int
-    areatype: Int
-    syncstatus: Int
-    haspricedifference: Boolean
-    ispaid: Boolean
-    isArchived: Boolean
-  }
-  input Dummy {
-    Id: String!
-    ArabicFullName: String
-    AddedDate: Date
-    ModifiedDate: Date
-    MakerId: String
-    DateOfBirth: Date
-    FirstLogIn: Boolean
-    AddressId: Int
-    UserName: String
-    NormalizedUserName: String
-    Email: String
-    NormalizedEmail: String
-    EmailConfirmed: Boolean
-    PasswordHash: String
-    SecurityStamp: String
-    ConcurrencyStamp: String
-    PhoneNumber: String
-    PhoneNumberConfirmed: Boolean
-    TwoFactorEnabled: Boolean
-    LockoutEnd: Date
-    LockoutEnabled: Boolean
-    AccessFailedCount: Int
-    SyncStatus: Int
-  }
   type Address {
     id: Int!
     description: String
@@ -237,10 +190,7 @@ export const typeDefs = gql`
     extracopiesprice: Float
     orderstatus: Int
     sync_status: Int
-    shippingtype_name: String
-    shippingcenter_adress: String
   }
-
   type Paymenttrasnsaction {
     id: Int
     merchantrefnum: String
@@ -264,6 +214,7 @@ export const typeDefs = gql`
   }
 
   type Query {
+    rualive: Boolean!
     requestsQuery(first: Int!, after: Int): Response
     usersQuery(first: Int!, after: String): UserResponse
     addressesQuery(first: Int!, after: Int): AddressResponse
@@ -273,16 +224,5 @@ export const typeDefs = gql`
       first: Int!
       after: Int
     ): PaymentTrasnsactionResponse
-    newUsersQuery(first: Int!, after: String, afterDate: Date!): UserResponse
-    newRequestsQuery(
-      first: Int!
-      after: Int
-      afterDate: Date!
-      id: Int!
-    ): Response
-  }
-  type Mutation {
-    addDummyUserData(inputs: [Dummy]): String
-    addDummyRequestsData(inputs: [DummyReq]): String
   }
 `;
