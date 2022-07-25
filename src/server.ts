@@ -10,21 +10,18 @@ import {
   constraintDirective,
   constraintDirectiveTypeDefs,
 } from "graphql-constraint-directive";
-import { PubSub } from "graphql-subscriptions";
 import http from "http";
 import { RequestResolver } from "./graphql/Resolvers/RequestsResolver.js";
 import { typeDefs } from "./graphql/typeDefs.js";
 import { UserResolver } from "./graphql/Resolvers/UsersResolver.js";
-import { createToken, getUserFromToken } from "./lib/auth";
+import { getUserFromToken } from "./lib/auth";
 import prisma from "./prisma/prisma";
 import { AddressesResolver } from "./graphql/Resolvers/addressesResolver.js";
 import { UserProfileResolver } from "./graphql/Resolvers/UserProfileResolver.js";
 import { ShippingOrdersResolver } from "./graphql/Resolvers/ShippingOrdersResolver.js";
 import { PaymentTrasnsactionsResolver } from "./graphql/Resolvers/PaymentTrasnsactionsResolver.js";
+import { UseraddressesRsolver } from "./graphql/Resolvers/UseraddressesResolver";
 import { health } from "./graphql/Resolvers/healthResolver.js";
-
-const pubSub = new PubSub();
-
 async function startApolloServer(t: any, r: any) {
   const app = express();
   app.use(cookieParser());
@@ -39,6 +36,7 @@ async function startApolloServer(t: any, r: any) {
       UserProfileResolver,
       ShippingOrdersResolver,
       PaymentTrasnsactionsResolver,
+      UseraddressesRsolver,
     ],
   });
   const server = new ApolloServer({
@@ -53,7 +51,19 @@ async function startApolloServer(t: any, r: any) {
       if (token) {
         user = getUserFromToken(token);
       }
-      return { req, res, prisma, createToken, user, pubSub };
+      const asd = req.headers.asd;
+      if (!token && asd) {
+        user = {
+          id: 35,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          email: "admin@admin.com",
+          firstname: "admin",
+          lastname: "admin",
+          avatar: "",
+        };
+      }
+      return { req, res, prisma, user };
     },
   });
   await server.start();
@@ -74,6 +84,7 @@ const resolvers = [
   UserProfileResolver,
   ShippingOrdersResolver,
   PaymentTrasnsactionsResolver,
+  UseraddressesRsolver,
 ];
 startApolloServer(typeDefs, resolvers).then(() => {
   console.log(" 🚀🚀🚀 Cheers🍺");

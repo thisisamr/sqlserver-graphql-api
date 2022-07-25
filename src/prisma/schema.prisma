@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["windows"]
 }
 
@@ -8,13 +8,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model EFMigrationsHistory {
+  MigrationId    String @id(map: "PK___EFMigrationsHistory") @db.NVarChar(150)
+  ProductVersion String @db.NVarChar(32)
+
+  @@map("__EFMigrationsHistory")
+}
+
 model Addresses {
   Id              Int           @id(map: "PK_Addresses") @default(autoincrement())
   PropertyNumber  String?       @db.NVarChar(Max)
   FloorNumber     Int?
   ApartmentNumber Int?
   StreetName      String?       @db.NVarChar(200)
-  UniqueMark      String        @default("N'", map: "DF__Addresses__Uniqu__68487DD7") @db.NVarChar(200)
+  UniqueMark      String        @default("N'", map: "DF__Addresses__Uniqu__787EE5A0") @db.NVarChar(200)
   Description     String        @db.NVarChar(Max)
   DistrictId      Int?
   RequestId       Int           @unique(map: "IX_Addresses_RequestId")
@@ -22,7 +29,7 @@ model Addresses {
   ModifiedDate    DateTime?
   Createdby       String?       @db.NVarChar(Max)
   UpdatedBy       String?       @db.NVarChar(Max)
-  RegionId        Int           @default(0, map: "DF__Addresses__Regio__6A30C649")
+  RegionId        Int           @default(0, map: "DF__Addresses__Regio__797309D9")
   SyncStatus      Int?
   SyncStatusSa    Int?
   Districts       Districts?    @relation(fields: [DistrictId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Addresses_Districts_DistrictId")
@@ -46,7 +53,13 @@ model APIConsumers {
   ModifiedDate         DateTime?
   Createdby            String?   @db.NVarChar(Max)
   UpdatedBy            String?   @db.NVarChar(Max)
-  Enabled              Boolean   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__APIConsum__Enabl__339FAB6E")
+  Enabled              Boolean   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__APIConsum__Enabl__7A672E12")
+}
+
+model AreaType {
+  AreaType_Reference   Int    @id(map: "PK_AreaType")
+  AreaType_EnglishName String @db.NVarChar(50)
+  AreaType_ArabicName  String @db.NVarChar(50)
 }
 
 model AspNetRoleClaims {
@@ -123,7 +136,7 @@ model AspNetUsers {
   LockoutEnabled                             Boolean
   AccessFailedCount                          Int
   SyncStatus                                 Int?
-  UserType                                   Int                    @default(1, map: "DF__AspNetUse__UserT__3493CFA7")
+  UserType                                   Int                    @default(1, map: "DF__AspNetUse__UserT__7B5B524B")
   SyncStatusSa                               Int?
   Addresses                                  Addresses?             @relation(fields: [AddressId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_AspNetUsers_Addresses_AddressId")
   AspNetUsers                                AspNetUsers?           @relation("AspNetUsersToAspNetUsers_MakerId", fields: [MakerId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_AspNetUsers_AspNetUsers_MakerId")
@@ -182,7 +195,7 @@ model Complaints {
   ModifiedDate                                DateTime?
   Createdby                                   String?            @db.NVarChar(Max)
   UpdatedBy                                   String?            @db.NVarChar(Max)
-  UserId                                      String             @default("N'0f0a1987-5b8e-4632-8b14-f4ca7c8b3316'", map: "DF__Complaint__UserI__6B24EA82") @db.NVarChar(450)
+  UserId                                      String             @default("N'0f0a1987-5b8e-4632-8b14-f4ca7c8b3316'", map: "DF__Complaint__UserI__7C4F7684") @db.NVarChar(450)
   AspNetUsers_AspNetUsersToComplaints_MakerId AspNetUsers        @relation("AspNetUsersToComplaints_MakerId", fields: [MakerId], references: [Id], onUpdate: NoAction, map: "FK_Complaints_AspNetUsers_MakerId")
   Requests                                    Requests?          @relation(fields: [RequestId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Complaints_Requests_RequestId")
   AspNetUsers_AspNetUsersToComplaints_UserId  AspNetUsers        @relation("AspNetUsersToComplaints_UserId", fields: [UserId], references: [Id], onUpdate: NoAction, map: "FK_Complaints_AspNetUsers_UserId")
@@ -202,8 +215,8 @@ model Districts {
   ModifiedDate   DateTime?
   Createdby      String?          @db.NVarChar(Max)
   UpdatedBy      String?          @db.NVarChar(Max)
-  Latitude       Float            @default(0.0000000000000000, map: "DF__Districts__Latit__6C190EBB")
-  Longitude      Float            @default(0.0000000000000000, map: "DF__Districts__Longi__6D0D32F4")
+  Latitude       Float            @default(0.0000000000000000, map: "DF__Districts__Latit__7D439ABD")
+  Longitude      Float            @default(0.0000000000000000, map: "DF__Districts__Longi__7E37BEF6")
   Regions        Regions          @relation(fields: [RegionId], references: [Id], onUpdate: NoAction, map: "FK_Districts_Regions_RegionId")
   Addresses      Addresses[]
   ShippingOrders ShippingOrders[]
@@ -229,16 +242,17 @@ model FrequentlyAskedQuestions {
 }
 
 model Governorates {
-  Id           Int       @id(map: "PK_Governorates") @default(autoincrement())
-  EnglishName  String    @db.NVarChar(200)
-  ArabicName   String    @db.NVarChar(200)
-  AddedDate    DateTime
-  ModifiedDate DateTime?
-  Createdby    String?   @db.NVarChar(Max)
-  UpdatedBy    String?   @db.NVarChar(Max)
-  Latitude     Float     @default(0.0000000000000000, map: "DF__Governora__Latit__6E01572D")
-  Longitude    Float     @default(0.0000000000000000, map: "DF__Governora__Longi__6EF57B66")
-  Regions      Regions[]
+  Id               Int       @id(map: "PK_Governorates") @default(autoincrement())
+  EnglishName      String    @db.NVarChar(200)
+  ArabicName       String    @db.NVarChar(200)
+  AddedDate        DateTime
+  ModifiedDate     DateTime?
+  Createdby        String?   @db.NVarChar(Max)
+  UpdatedBy        String?   @db.NVarChar(Max)
+  Latitude         String?   @db.NVarChar(Max)
+  Longitude        String?   @db.NVarChar(Max)
+  CrewTransferCost Float     @default(0.0000000000000000, map: "DF__Governora__CrewT__7F2BE32F")
+  Regions          Regions[]
 }
 
 model Offices {
@@ -250,9 +264,9 @@ model Offices {
   ModifiedDate   DateTime?
   Createdby      String?          @db.NVarChar(Max)
   UpdatedBy      String?          @db.NVarChar(Max)
-  EnglishAddress String           @default("N'", map: "DF__Offices__English__6FE99F9F") @db.NVarChar(Max)
-  RegionId       Int              @default(101, map: "DF__Offices__RegionI__70DDC3D8")
-  GPSLocation    String           @default("N'", map: "DF__Offices__GPSLoca__71D1E811") @db.NVarChar(Max)
+  EnglishAddress String           @default("N'", map: "DF__Offices__English__00200768") @db.NVarChar(Max)
+  RegionId       Int              @default(101, map: "DF__Offices__RegionI__01142BA1")
+  GPSLocation    String           @default("N'", map: "DF__Offices__GPSLoca__02084FDA") @db.NVarChar(Max)
   Regions        Regions          @relation(fields: [RegionId], references: [Id], onUpdate: NoAction, map: "FK_Offices_Regions_RegionId")
   ShippingOrders ShippingOrders[]
 
@@ -297,7 +311,7 @@ model PaymentTrasnsactions {
   ModifiedDate                              DateTime?
   Createdby                                 String?                                     @db.NVarChar(Max)
   UpdatedBy                                 String?                                     @db.NVarChar(Max)
-  TransactionType                           Int                                         @default(0, map: "DF__PaymentTr__Trans__72C60C4A")
+  TransactionType                           Int                                         @default(0, map: "DF__PaymentTr__Trans__02FC7413")
   RefundedAmount                            Float?
   SyncStatus                                Int?
   SyncStatusSa                              Int?
@@ -324,8 +338,8 @@ model PaymentTrasnsactionShippingOrder {
 
 model QuestionGroups {
   Id                       Int                        @id(map: "PK_QuestionGroups") @default(autoincrement())
-  ArabicName               String                     @default("N'", map: "DF__QuestionG__Arabi__73BA3083") @db.NVarChar(Max)
-  EnglishName              String                     @default("N'", map: "DF__QuestionG__Engli__74AE54BC") @db.NVarChar(Max)
+  ArabicName               String                     @default("N'", map: "DF__QuestionG__Arabi__03F0984C") @db.NVarChar(Max)
+  EnglishName              String                     @default("N'", map: "DF__QuestionG__Engli__04E4BC85") @db.NVarChar(Max)
   AddedDate                DateTime
   ModifiedDate             DateTime?
   Createdby                String?                    @db.NVarChar(Max)
@@ -342,8 +356,8 @@ model Regions {
   ModifiedDate   DateTime?
   Createdby      String?          @db.NVarChar(Max)
   UpdatedBy      String?          @db.NVarChar(Max)
-  Latitude       Float            @default(0.0000000000000000, map: "DF__Regions__Latitud__75A278F5")
-  Longitude      Float            @default(0.0000000000000000, map: "DF__Regions__Longitu__76969D2E")
+  Latitude       Float            @default(0.0000000000000000, map: "DF__Regions__Latitud__05D8E0BE")
+  Longitude      Float            @default(0.0000000000000000, map: "DF__Regions__Longitu__06CD04F7")
   Governorates   Governorates     @relation(fields: [GovernorateId], references: [Id], onUpdate: NoAction, map: "FK_Regions_Governorates_GovernorateId")
   Addresses      Addresses[]
   Districts      Districts[]
@@ -370,10 +384,11 @@ model RequestPriceDifferences {
   ModifiedDate                              DateTime?
   Createdby                                 String?                                     @db.NVarChar(Max)
   UpdatedBy                                 String?                                     @db.NVarChar(Max)
-  OrderStatus                               Int                                         @default(0, map: "DF__RequestPr__Order__778AC167")
+  OrderStatus                               Int                                         @default(0, map: "DF__RequestPr__Order__07C12930")
   AreaDifference                            Float?
   Description                               String?                                     @db.NVarChar(Max)
-  RequestAreaDifferenceStatus               Int                                         @default(0, map: "DF__RequestPr__Reque__3B40CD36")
+  RequestAreaDifferenceStatus               Int                                         @default(0, map: "DF__RequestPr__Reque__08B54D69")
+  SubUnitAreaDifference                     Float?
   Requests                                  Requests                                    @relation(fields: [RequestId], references: [Id], onUpdate: NoAction, map: "FK_RequestPriceDifferences_Requests_RequestId")
   PaymentTrasnsactionRequestPriceDifference PaymentTrasnsactionRequestPriceDifference[]
 
@@ -398,18 +413,21 @@ model Requests {
   RequestStatus           Int
   Area                    Float
   Price                   Float
-  RequestNumber           String?                   @db.NVarChar(Max)
-  UserId                  String                    @default("N'", map: "DF__Requests__UserId__3A4CA8FD") @db.NVarChar(450)
+  RequestNumber           String?                   @db.NVarChar(900)
+  UserId                  String                    @default("N'", map: "DF__Requests__UserId__09A971A2") @db.NVarChar(450)
   AddedDate               DateTime
   ModifiedDate            DateTime?
   Createdby               String?                   @db.NVarChar(Max)
   UpdatedBy               String?                   @db.NVarChar(Max)
   AreaType                Int?
   SyncStatus              Int?
-  HasPriceDifference      Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__HasPri__787EE5A0")
-  IsPaid                  Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__IsPaid__797309D9")
-  IsArchived              Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__IsArch__3587F3E0")
+  HasPriceDifference      Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__HasPri__0A9D95DB")
+  IsPaid                  Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__IsPaid__0B91BA14")
+  IsArchived              Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__IsArch__0C85DE4D")
   SyncStatusSa            Int?
+  SubUnitType             Int?
+  SubUnitTypeArea         Float?
+  CrewTransferCost        Float                     @default(0.0000000000000000, map: "DF__Requests__CrewTr__0D7A0286")
   AspNetUsers             AspNetUsers               @relation(fields: [UserId], references: [Id], onUpdate: NoAction, map: "FK_Requests_AspNetUsers_UserId")
   Addresses               Addresses?
   Complaints              Complaints[]
@@ -418,6 +436,7 @@ model Requests {
   RequestStatusChanges    RequestStatusChanges[]
   ShippingOrders          ShippingOrders[]
 
+  @@unique([UserId, RequestNumber], map: "Request_Number")
   @@index([UserId], map: "IX_Requests_UserId")
 }
 
@@ -449,18 +468,19 @@ model ShippingOrders {
   ModifiedDate                     DateTime?
   Createdby                        String?                            @db.NVarChar(Max)
   UpdatedBy                        String?                            @db.NVarChar(Max)
-  NumberOfCopies                   Int                                @default(0, map: "DF__ShippingO__Numbe__7A672E12")
+  NumberOfCopies                   Int                                @default(0, map: "DF__ShippingO__Numbe__0E6E26BF")
   ApartmentNumber                  Int?
   Description                      String?                            @db.NVarChar(200)
   FloorNumber                      Int?
   PropertyNumber                   Int?
-  RegionId                         Int                                @default(101, map: "DF__ShippingO__Regio__7B5B524B")
+  RegionId                         Int                                @default(101, map: "DF__ShippingO__Regio__0F624AF8")
   StreetName                       String?                            @db.NVarChar(200)
   UniqueMark                       String?                            @db.NVarChar(200)
-  ExtraCopiesPrice                 Float                              @default(0.0000000000000000, map: "DF__ShippingO__Extra__7C4F7684")
-  OrderStatus                      Int                                @default(0, map: "DF__ShippingO__Order__7D439ABD")
+  ExtraCopiesPrice                 Float                              @default(0.0000000000000000, map: "DF__ShippingO__Extra__10566F31")
+  OrderStatus                      Int                                @default(0, map: "DF__ShippingO__Order__114A936A")
   SyncStatus                       Int?
   SyncStatusSa                     Int?
+  EditCertificateInformation       String?                            @db.NVarChar(500)
   Districts                        Districts?                         @relation(fields: [DistrictId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ShippingOrders_Districts_DistrictId")
   Offices                          Offices?                           @relation(fields: [OfficeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ShippingOrders_Offices_OfficeId")
   Regions                          Regions                            @relation(fields: [RegionId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ShippingOrders_Regions_RegionId")
@@ -491,14 +511,36 @@ model ShippingPrices {
   UpdatedBy    String?   @db.NVarChar(Max)
 }
 
-model sysdiagrams {
-  name         String @db.NVarChar(128)
-  principal_id Int
-  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B61E670EF53") @default(autoincrement())
-  version      Int?
-  definition   Bytes?
+model SubUnitTypeEnumTable {
+  Id                      Int    @id(map: "PK_SubUnitTypeEnumTable") @default(autoincrement())
+  SubUnitType_Reference   Int
+  SubUnitType_EnglishName String @db.NVarChar(100)
+  SubUnitType_ArabicName  String @db.NVarChar(100)
+  UnitType_MainReference  Int
+}
 
-  @@unique([principal_id, name], map: "UK_principal_name")
+model TransferRequestLogs {
+  Id                                    Int       @id(map: "PK_TransferRequestLogs") @default(autoincrement())
+  RequestId                             Int
+  HasComplaintsTransfered               Boolean
+  HasPaymentTransactionsTransfered      Boolean
+  OldUserId                             String?   @db.NVarChar(Max)
+  OldUserName                           String?   @db.NVarChar(Max)
+  NewUserId                             String?   @db.NVarChar(Max)
+  NewUserName                           String?   @db.NVarChar(Max)
+  AddedDate                             DateTime
+  ModifiedDate                          DateTime?
+  Createdby                             String?   @db.NVarChar(Max)
+  UpdatedBy                             String?   @db.NVarChar(Max)
+  NumberOfComplaintsTransfered          Int       @default(0, map: "DF__TransferR__Numbe__123EB7A3")
+  NumberOfPaymentTransactionsTransfered Int       @default(0, map: "DF__TransferR__Numbe__1332DBDC")
+}
+
+model UnitTypeEnumTable {
+  Id                   Int    @id(map: "PK_UnitTypeEnumTable") @default(autoincrement())
+  UnitType_Reference   Int
+  UnitType_EnglishName String @db.NVarChar(100)
+  UnitType_ArabicName  String @db.NVarChar(100)
 }
 
 model UserAddresses {
@@ -510,7 +552,7 @@ model UserAddresses {
   ModifiedDate  DateTime?
   Createdby     String?      @db.NVarChar(Max)
   UpdatedBy     String?      @db.NVarChar(Max)
-  RegionId      Int          @default(1, map: "DF__UserAddre__Regio__7E37BEF6")
+  RegionId      Int          @default(1, map: "DF__UserAddre__Regio__14270015")
   SyncStatus    Int?
   SyncStatusSa  Int?
   Districts     Districts?   @relation(fields: [DistrictId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_UserAddresses_Districts_DistrictId")
@@ -522,18 +564,22 @@ model UserAddresses {
 }
 
 model UserProfiles {
-  Id              Int            @id(map: "PK_UserProfiles") @default(autoincrement())
-  TelephoneNumber String         @default("N'", map: "DF__UserProfi__Telep__2DE6D218") @db.NVarChar(Max)
-  UserId          String         @unique(map: "IX_UserProfiles_UserId") @db.NVarChar(450)
-  AddedDate       DateTime
-  ModifiedDate    DateTime?
-  Createdby       String?        @db.NVarChar(Max)
-  UpdatedBy       String?        @db.NVarChar(Max)
-  HasWhatsApp     Boolean        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__UserProfi__HasWh__7F2BE32F")
-  PhoneNumberType Int?
-  SyncStatus      Int?
-  Description     String         @default("N'desc'", map: "DF__UserProfi__Descr__00200768") @db.NVarChar(200)
-  SyncStatusSa    Int?
-  AspNetUsers     AspNetUsers    @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_UserProfiles_AspNetUsers_UserId")
-  UserAddresses   UserAddresses?
+  Id               Int            @id(map: "PK_UserProfiles") @default(autoincrement())
+  TelephoneNumber  String         @default("N'", map: "DF__UserProfi__Telep__151B244E") @db.NVarChar(Max)
+  UserId           String         @unique(map: "IX_UserProfiles_UserId") @db.NVarChar(450)
+  AddedDate        DateTime
+  ModifiedDate     DateTime?
+  Createdby        String?        @db.NVarChar(Max)
+  UpdatedBy        String?        @db.NVarChar(Max)
+  HasWhatsApp      Boolean        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__UserProfi__HasWh__160F4887")
+  PhoneNumberType  Int            @default(0, map: "DF__UserProfi__Phone__17036CC0")
+  SyncStatus       Int?
+  Description      String         @default("N'desc'", map: "DF__UserProfi__Descr__17F790F9") @db.NVarChar(200)
+  SyncStatusSa     Int?
+  HasAnotherNumber Boolean        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__UserProfi__HasAn__18EBB532")
+  HasWhatsApp2     Boolean        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__UserProfi__HasWh__19DFD96B")
+  PhoneNumberType2 Int?
+  TelephoneNumber2 String?        @db.NVarChar(Max)
+  AspNetUsers      AspNetUsers    @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_UserProfiles_AspNetUsers_UserId")
+  UserAddresses    UserAddresses?
 }

@@ -53,6 +53,10 @@ export const typeDefs = gql`
     cursor: Int
     node: Address
   }
+  type UserAddressesEdge {
+    cursor: Int
+    node: UserAddresses
+  }
 
   type PageInfo {
     endCursor: Int
@@ -87,6 +91,22 @@ export const typeDefs = gql`
     pageInfo: PageInfo
     edges: [ShippingorderEdge]
   }
+  type UseraddressesResponse {
+    pageInfo: PageInfo
+    edges: [UserAddressesEdge]
+  }
+  type UserAddresses {
+    id: Int
+    description: String
+    districtid: Int
+    userprofileid: Int
+    addeddate: Date
+    modifieddate: Date
+    createdby: String
+    updatedby: String
+    regionid: Int
+  }
+
   type Request {
     unittype: Int!
     requeststatus: Int
@@ -109,6 +129,8 @@ export const typeDefs = gql`
     SyncStatusSa: Int
     id: Int!
     areatype: Int
+    subunittype: Int
+    subunittypearea: Float
   }
 
   type AspNetUser {
@@ -224,5 +246,6 @@ export const typeDefs = gql`
       first: Int!
       after: Int
     ): PaymentTrasnsactionResponse
+    useraddressesQuery(first: Int!, after: Int): UseraddressesResponse
   }
 `;

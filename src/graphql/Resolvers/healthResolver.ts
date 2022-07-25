@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Context } from "apollo-server-core";
+import { AuthenticationError, Context } from "apollo-server-core";
 import { IncomingMessage, OutgoingMessage } from "http";
 import { Resolvers, User } from "../../generated/graphql";
 export interface Icontext extends Context {
@@ -11,7 +11,10 @@ export interface Icontext extends Context {
 }
 export const health: Resolvers<Icontext> = {
   Query: {
-    rualive: async () => {
+    rualive: async (_,__,{user}) => {
+      if(!user){
+        throw new AuthenticationError("no auth")
+      }
       return true;
     },
   },

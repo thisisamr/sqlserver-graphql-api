@@ -9,13 +9,14 @@ export interface Icontext extends Context {
   req: IncomingMessage;
   createToken: (user: User) => string;
 }
-export const UserProfileResolver: Resolvers<Icontext> = {
+
+export const UseraddressesRsolver: Resolvers<Icontext> = {
   Query: {
-    userprofilesQuery: async (_, { after, first }, { prisma }) => {
+    useraddressesQuery: async (_, { after, first }, { prisma }) => {
       let queryResults = null;
       if (after) {
         //check for a a cursor
-        queryResults = await prisma.userProfiles.findMany({
+        queryResults = await prisma.userAddresses.findMany({
           take: first,
           skip: 1,
           cursor: {
@@ -23,15 +24,15 @@ export const UserProfileResolver: Resolvers<Icontext> = {
           },
         });
       } else {
-        queryResults = await prisma.userProfiles.findMany({
+        queryResults = await prisma.userAddresses.findMany({
           take: first,
         });
       }
       if (queryResults.length > 0) {
-        const lastuserProfilesResult = queryResults[queryResults.length - 1];
-        const myCursor = lastuserProfilesResult.Id;
+        const lastUserAddressesResult = queryResults[queryResults.length - 1];
+        const myCursor = lastUserAddressesResult.Id;
 
-        const secondQueryResults = await prisma.userProfiles.findMany({
+        const secondQueryResults = await prisma.userAddresses.findMany({
           take: first,
           cursor: {
             Id: myCursor,
@@ -45,20 +46,18 @@ export const UserProfileResolver: Resolvers<Icontext> = {
               (secondQueryResults.length < first &&
                 secondQueryResults.length > 1),
           },
-          edges: queryResults.map((userProfile) => ({
-            cursor: userProfile.Id,
+          edges: queryResults.map((useraddresses) => ({
+            cursor: useraddresses.Id,
             node: {
-              id: userProfile.Id,
-              telephonenumber: userProfile.TelephoneNumber,
-              userid: userProfile.UserId,
-              addeddate: userProfile.AddedDate,
-              modifieddate: userProfile.ModifiedDate,
-              createdby: userProfile.Createdby,
-              updatedby: userProfile.UpdatedBy,
-              haswhatsapp: userProfile.HasWhatsApp,
-              phonenumbertype: userProfile.PhoneNumberType,
-              description: userProfile.Description,
-              sync_status: userProfile.SyncStatus,
+              id: useraddresses.Id,
+              description: useraddresses.Description,
+              districtid: useraddresses.DistrictId,
+              userprofileid: useraddresses.UserProfileId,
+              addeddate: useraddresses.AddedDate,
+              modifieddate: useraddresses.ModifiedDate,
+              createdby: useraddresses.Createdby,
+              updatedby: useraddresses.UpdatedBy,
+              regionid: useraddresses.RegionId,
             },
           })),
         };

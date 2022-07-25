@@ -70,6 +70,8 @@ export const RequestResolver: Resolvers<Icontext> = {
               areatype: request.AreaType,
               requestnumber: request.RequestNumber,
               userid: request.UserId,
+              subunittype: request.SubUnitType,
+              subunittypearea: request.SubUnitTypeArea,
             },
           })),
         };
